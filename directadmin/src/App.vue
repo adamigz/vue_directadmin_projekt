@@ -1,32 +1,74 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div v-if="loggedIn">
+      <b-jumbotron header-level="4">
+        <template #header>
+          <router-link to="/" tag="h1" class="title">DirectAdmin</router-link>
+          
+              // TODO: Make profile managment icons 
+          
+
+        </template>
+        <hr class="my-4">
+        
+              // TODO: Make navbar (components)
+
+      </b-jumbotron>
+      <router-view></router-view>
     </div>
-    <router-view/>
+
+    <div v-else>   
+      <b-container>
+          <b-row align-h="center">
+            <label for="username">name: </label>
+            <b-form-input id="username" type="text" v-model="username"></b-form-input>
+          </b-row>
+          <b-row align-h="center">
+            <label for="password">password: </label>
+            <b-form-input id="password" type="password" v-model="password"></b-form-input>
+          </b-row>
+          <br>
+          <b-row align-h="center">
+            <b-button @click="login()" size="lg" variant="success">login</b-button>
+          </b-row>
+      </b-container>
+    </div> 
   </div>
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      loggedIn: false,
+      isLogging: false
+    }
+  },
+  methods: {
+    async login() {
+      this.isLogging = true;
+      try {
+        let {data} = await axios.post('https://161.35.197.42:2222/CMD_LOGIN', {
+          username: this.username,
+          password: this.password
+        });
+      } catch (error) {
+        console.log("----------");
+        console.log(error);
+        console.log("----------");
+      }
+      //console.log(data);
+    }
+  }
 }
+</script>
 
-#nav {
-  padding: 30px;
+<style scoped>
+.title:hover {
+  cursor: pointer;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.title {
+  width:max-content;
 }
 </style>
