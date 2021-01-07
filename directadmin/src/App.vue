@@ -48,17 +48,15 @@ export default {
   methods: {
     async login() {
       this.isLogging = true;
-      try {
-        await axios.post('http://172.20.10.3:8080/LOGIN', `username=${this.username}&password=${this.password}`)
-        .then((response) => {
-          console.log(response.data);
-        });
-      } catch (error) {
-        console.log("----------");
-        console.log(error);
-        console.log("----------");
-      }
-      
+      await this.$store.dispatch('login', {
+        username: this.username,
+        password: this.password
+      })
+    }
+  },
+  computed: {
+    loggedIn() {
+
     }
   }
 }
