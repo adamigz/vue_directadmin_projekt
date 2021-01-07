@@ -49,16 +49,16 @@ export default {
     async login() {
       this.isLogging = true;
       try {
-        let {data} = await axios.post('https://161.35.197.42:2222/CMD_LOGIN', {
-          username: this.username,
-          password: this.password
+        await axios.post('http://172.20.10.3:8080/LOGIN', `username=${this.username}&password=${this.password}`)
+        .then((response) => {
+          console.log(response.data);
         });
       } catch (error) {
         console.log("----------");
         console.log(error);
         console.log("----------");
       }
-      //console.log(data);
+      
     }
   }
 }
