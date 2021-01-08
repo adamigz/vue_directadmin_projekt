@@ -12,6 +12,7 @@ let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
+  maxRedirects: 0
 };
 
 const _axios = axios.create(config);

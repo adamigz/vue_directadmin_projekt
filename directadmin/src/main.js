@@ -7,8 +7,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
 Vue.config.productionTip = false;
-//axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
 new Vue({
   router,

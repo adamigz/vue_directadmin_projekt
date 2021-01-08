@@ -6,19 +6,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    session: null
+    sessionId: null
   },
   mutations: {
     setSession(state, perk){
-      state.session = perk;
+      state.sessionId = perk;
     }
   },
   actions: {
     login: (ctx, perk) => {
       try {
-        axios.post('http://172.20.10.3:8080/API/LOGIN', `username=${perk.username}&password=${perk.password}`)
+        axios.post('http://172.20.10.3:8080/API/LOGIN', 
+        `username=${perk.username}&password=${perk.password}`)
         .then((response) => {
-          console.log(response);
+          ctx.commit('setSession', response.headers);
         });
       } catch (error) {
         console.log("----------");

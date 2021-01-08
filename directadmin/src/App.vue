@@ -46,20 +46,17 @@ export default {
     }
   },
   methods: {
-    async login() {
+    login() {
       this.isLogging = true;
-      await this.$store.dispatch('login', {
+      this.$store.dispatch('login', {
         username: this.username,
         password: this.password
-      })
-    }
-  },
-  computed: {
-    loggedIn() {
-
+      });
+      
     }
   }
 }
+
 </script>
 
 <style scoped>
