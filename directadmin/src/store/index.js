@@ -1,26 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import "../plugins/axios";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    sessionId: null
+    loggedIn: false,
+    session: null
   },
   mutations: {
-    setSession(state, perk){
-      state.sessionId = perk;
-    }
   },
   actions: {
-    login: (ctx, perk) => {
+    login: ({state}, payload) => {
       try {
-        axios.post('http://172.20.10.3:8080/API/LOGIN', 
-        `username=${perk.username}&password=${perk.password}`)
+        axios.post('http://192.168.8.101:8080/API/LOGIN', payload)
         .then((response) => {
-          ctx.commit('setSession', response.headers);
-        });
+          console.log(response);
+        })
       } catch (error) {
         console.log("----------");
         console.log(error);

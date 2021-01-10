@@ -41,18 +41,19 @@ export default {
     return {
       username: '',
       password: '',
-      loggedIn: false,
       isLogging: false
     }
   },
   methods: {
-    login() {
+    async login() {
       this.isLogging = true;
-      this.$store.dispatch('login', {
-        username: this.username,
-        password: this.password
-      });
+      await this.$store.dispatch('login', `username=${this.username}&password=${this.password}&json=yes`);
       
+    }
+  },
+  computed: {
+    loggedIn: function() {
+      return this.$store.state.loggedIn;
     }
   }
 }
