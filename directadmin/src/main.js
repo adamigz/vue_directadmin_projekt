@@ -10,6 +10,7 @@ import store from './store'
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 Vue.config.productionTip = false;
+Vue.use(require('vue-cookies'));
 
 new Vue({
   router,
