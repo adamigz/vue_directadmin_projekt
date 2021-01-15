@@ -5,12 +5,21 @@
         <b-navbar toggleable="sm" type="light" variant="light">
           <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
-            <router-link to="/" class="title"><b-navbar-brand>DirectAdmin</b-navbar-brand></router-link>
+            <router-link to="/" class="title"><b-navbar-brand><h1 class="mb-0">DirectAdmin</h1></b-navbar-brand></router-link>
 
           <b-collapse id="nav-text-collapse" is-nav>
             <b-navbar-nav class="ml-auto">
-                <b-nav-text>{{ loggedUsername }}</b-nav-text>
-                <b-button @click="logout()" class="ml-3" variant="danger"><b-icon icon="power"></b-icon></b-button>
+                <b-dropdown right variant="outline-primary">
+                  <template #button-content>
+                    {{ domain }}
+                  </template>
+                    <div v-for="d in domains" :key="d">
+                      <b-dropdown-item @click="changeDomain(d)">{{ d }}</b-dropdown-item>
+                    </div>
+                </b-dropdown>
+                
+                <b-nav-text class="ml-5"><b-icon-person-circle scale="1.5" class="mr-2"></b-icon-person-circle>{{ loggedUsername }}</b-nav-text>
+                <b-button @click="logout()" class="ml-5" variant="danger"><b-icon icon="power"></b-icon></b-button>
             </b-navbar-nav>
           </b-collapse>
         </b-navbar>
@@ -79,6 +88,9 @@ export default {
       await this.$store.commit('logout');
       localStorage.removeItem('loginData');
       this.$router.push('/')
+    },
+    changeDomain(payload){
+      this.$store.commit('setDomain', payload);
     }
   },
   computed: {
@@ -87,9 +99,15 @@ export default {
     },
     loggedUsername: function() {
       return this.$store.state.username;
+    },
+    domain() {
+      return this.$store.state.activeDomain;
+    },
+    domains() {
+      return this.$store.state.data.DOMAIN_LIST;
     }
   },
-  mounted() {
+  beforeMount() {
     if(localStorage.getItem('loginData')){
       this.$store.dispatch('login', localStorage.getItem('loginData'));
     }

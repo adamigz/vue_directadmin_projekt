@@ -1,8 +1,18 @@
 <template>
-    <b-overlay :show="show" rounded="lg">
+    <b-overlay :show="!show" rounded="lg">
         <b-card>
             <b-card-title><slot></slot></b-card-title>
-            <b-progress :max="max" :value="value" precision="3"></b-progress>
+            <div v-if="details || max=='unlimited'" @mouseenter="details = !details" @mouseleave="details = !details">
+                <b-progress :variant="variant" :max="maxValue" :value="value" height="1.5rem" precision="3">
+                    <b-progress-bar :value="max">
+                        <span><strong>{{ value }} / {{ max }}</strong></span>
+                    </b-progress-bar>
+                </b-progress> 
+            </div>
+            <div v-else @mouseenter="details = !details" @mouseleave="details = !details">
+                <b-progress :variant="variant" :max="maxValue" :value="value" height="1.5rem" precision="3">
+                </b-progress>
+            </div>
         </b-card>
     </b-overlay>
 </template>
@@ -12,17 +22,37 @@ export default {
     name: 'ProgressBar',
     data(){
         return {
-            show: false
+            details: false
         }
     },
     props: {
         max: {
-            required: true,
-            type: Number
+            required: true
         }, 
         value: {
-            required: true,
-            type: Number
+            required: true
+        },
+        show: {
+            required: true
+        }
+    },
+    computed: {
+        variant(){
+            let t = (this.value/this.max)*100;
+            if (t<=50 || this.max=='unlimited') {
+                return "success";
+            } else if(t<=75 && t>50) {
+                return "warning";
+            } else {
+                return "danger";
+            }
+        },
+        maxValue() {
+            if(this.max=='unlimited'){
+                return this.value;
+            } else {
+                return this.max;
+            }
         }
     }
 }

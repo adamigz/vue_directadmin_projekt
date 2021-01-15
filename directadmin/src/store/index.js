@@ -7,8 +7,8 @@ export default new Vuex.Store({
   state: {
     loggedIn: false,
     username: '',
-    domain: '',
-    domains: []
+    data: {},
+    activeDomain: ''
   },
   mutations: {
     setUsername(state, perk) {
@@ -19,7 +19,10 @@ export default new Vuex.Store({
       state.username = '';
     },
     setDomain(state, perk){
-      state.domain = perk;
+      state.activeDomain = perk;
+    },
+    setData(state, perk){
+      state.data = perk;
     }
   },
   actions: {
@@ -27,22 +30,33 @@ export default new Vuex.Store({
       try {
         await axios.post('https://192.168.8.101:8080/API/LOGIN', payload)
         .then((response) => {
-          console.log(response);
+          //console.log(response);
           ctx.commit('setUsername', response.data.username);
           ctx.state.loggedIn = true;
           try{
-            let d = axios(`https://192.168.8.101:8080/API/GET_USER_DATA?user=${response.data.username}`);
-            ctx.state.domains = d;
             localStorage.setItem('loginData', payload);
           } catch(e){
             console.log(e);
           }
-          
         })
       } catch (error) {
         console.log("----------");
         console.log(error);
         console.log("----------");
+      }
+    },
+    async userData(ctx){
+      try {
+        let temp = await axios.get(`https://192.168.8.101:8080/API?json=yes&initial=yes&request=global&show_extra=yes`)
+        .then((res) => {
+          return res.data;
+        });
+        if(ctx.state.activeDomain == ''){
+          ctx.commit('setDomain', temp.DEFAULT_DOMAIN);
+        }
+        return temp;
+      } catch (error) {
+        console.log(error);
       }
     }
   },

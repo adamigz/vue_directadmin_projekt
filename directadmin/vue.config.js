@@ -17,11 +17,11 @@ module.exports = {
           "^/API/LOGIN": "",
         },
       },
-      "/API/GET_USER_DATA": {
+      "/API": {
         target: "https://161.35.197.42:2222/CMD_JSON_LANG",
         changeOrigin: true,
         pathRewrite: {
-          "^/API/GET_USER_DATA": "",
+          "^/API": "",
         },
       },
     },
