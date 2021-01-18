@@ -1,11 +1,11 @@
 <template>
-    <b-overlay :show="!show" rounded="lg">
+    <b-overlay :show="show" rounded="lg">
         <b-card>
-            <b-card-title><slot></slot></b-card-title>
+            <h3><slot></slot></h3>
             <div v-if="details || max=='unlimited'" @mouseenter="details = !details" @mouseleave="details = !details">
                 <b-progress :variant="variant" :max="maxValue" :value="value" height="1.5rem" precision="3">
                     <b-progress-bar :value="max">
-                        <span><strong>{{ value }} / {{ max }}</strong></span>
+                        <span><strong>{{ value }} MB / {{ max }} MB</strong></span>
                     </b-progress-bar>
                 </b-progress> 
             </div>

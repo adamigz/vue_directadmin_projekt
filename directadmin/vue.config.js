@@ -24,6 +24,13 @@ module.exports = {
           "^/API": "",
         },
       },
+      "/test": {
+        target: "https://161.35.197.42:2222/CMD_API_SHOW_DOMAINS",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/test": "",
+        },
+      },
     },
   },
 };

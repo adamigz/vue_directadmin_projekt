@@ -5,7 +5,11 @@
         <b-navbar toggleable="sm" type="light" variant="light">
           <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
-            <router-link to="/" class="title"><b-navbar-brand><h1 class="mb-0">DirectAdmin</h1></b-navbar-brand></router-link>
+            <b-button class="mr-2" variant="primary-outline" v-b-toggle.sidebar>
+              <b-icon-grid3x3-gap-fill variant="primary" @mouseenter="scale += 0.3" @mouseleave="scale -= 0.3" :scale="scale"></b-icon-grid3x3-gap-fill>
+            </b-button>
+            
+            <router-link to="/" class="title"><b-navbar-brand><h1 class="mb-0" :style="cColor">DirectAdmin</h1></b-navbar-brand></router-link>
 
           <b-collapse id="nav-text-collapse" is-nav>
             <b-navbar-nav class="ml-auto">
@@ -18,12 +22,25 @@
                     </div>
                 </b-dropdown>
                 
-                <b-nav-text class="ml-5"><b-icon-person-circle scale="1.5" class="mr-2"></b-icon-person-circle>{{ loggedUsername }}</b-nav-text>
+                <b-nav-text class="ml-5 text-dark"><b-icon-person-circle scale="1.5" class="mr-2"></b-icon-person-circle>{{ loggedUsername }}</b-nav-text>
                 <b-button @click="logout()" class="ml-5" variant="danger"><b-icon icon="power"></b-icon></b-button>
             </b-navbar-nav>
           </b-collapse>
         </b-navbar>
       </div>
+      <b-container>
+        
+        <b-sidebar backdrop backdrop-variant="dark" shadow id="sidebar" title="Menu">
+          <div class="px-3 py-2">
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
+              in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+            </p>
+            <b-img src="https://picsum.photos/500/500/?image=54" fluid thumbnail></b-img>
+          </div>
+        </b-sidebar>
+        
+      </b-container>
       <router-view></router-view>
     </div>
 
@@ -67,7 +84,8 @@ export default {
       errorMsg: 'Nie udało się zalogować, spróbuj ponownie!',
       username: '',
       password: '',
-      isLogging: false
+      isLogging: false,
+      scale: 1.5
     }
   },
   methods: {
@@ -105,6 +123,9 @@ export default {
     },
     domains() {
       return this.$store.state.data.DOMAIN_LIST;
+    },
+    cColor() {
+      return `color: ${this.$store.state.data.CUSTOM_COLOR_1}`;
     }
   },
   beforeMount() {
