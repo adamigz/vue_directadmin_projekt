@@ -4,7 +4,6 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     port: 8080,
-    host: "192.168.8.101",
     https: true,
     pfx: fs.readFileSync("./localhost.pfx"),
     pfxPassphrase: "haslo",

@@ -28,7 +28,7 @@ export default new Vuex.Store({
   actions: {
     async login(ctx, payload){
       try {
-        await axios.post('https://192.168.8.101:8080/API/LOGIN', payload)
+        await axios.post('/API/LOGIN', payload)
         .then((response) => {
           //console.log(response);
           ctx.commit('setUsername', response.data.username);
@@ -47,7 +47,7 @@ export default new Vuex.Store({
     },
     async userData(ctx){
       try {
-        let temp = await axios.get(`https://192.168.8.101:8080/API?json=yes&initial=yes&request=global&show_extra=yes`)
+        let temp = await axios.get(`/API?json=yes&initial=yes&request=global&show_extra=yes`)
         .then((res) => {
           return res.data;
         });
