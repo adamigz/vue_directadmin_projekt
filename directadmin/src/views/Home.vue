@@ -4,9 +4,11 @@
     <b-col cols="8">
       <b-container class="pl-0 pr-0">
         <b-card>
-          <h3>Sample text</h3>
+          <b-button @click="send()" variant="primary-outline" size="lg">
+            Wyślij
+          </b-button>
           <hr>
-          <h5>Sample text</h5>
+          <router-link to="/createDomain">create domain</router-link>
         </b-card>
       </b-container>
     </b-col>
@@ -48,15 +50,18 @@ export default {
   },
   data() {
     return {
-      loaded: true
+      loaded: false
     }
   },
   methods: {
-    getUserData(){
-      let d = this.$store.dispatch('userData');
-      d.then((res) => {
-        this.$store.commit('setData', res);
-      })
+    send() {
+      let res = this.$store.dispatch('createDomain', 'json=yes&action=create&domain=apirequest.com&bandwidth=200&quota=500&ssl=ON&cgi=ON&php=ON')
+      .then((res) => {
+        return res.result;
+      });
+      if (res != "Domain Created Successfully") {
+        console.log('błąd');
+      }
     }
   },
   computed: {
@@ -96,10 +101,6 @@ export default {
         max: this.$store.state.data.USERINODEMAX
       }
     }
-  },
-  async mounted() {
-    await this.getUserData();
-    this.loaded = false;
   }
 }
 </script>

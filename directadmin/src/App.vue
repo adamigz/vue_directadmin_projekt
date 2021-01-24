@@ -9,7 +9,7 @@
               <b-icon-grid3x3-gap-fill variant="primary" @mouseenter="scale += 0.3" @mouseleave="scale -= 0.3" :scale="scale"></b-icon-grid3x3-gap-fill>
             </b-button>
             
-            <router-link to="/" class="title"><b-navbar-brand><h1 class="mb-0" :style="cColor">DirectAdmin</h1></b-navbar-brand></router-link>
+            <router-link to="/" class="title"><b-navbar-brand><h1 class="mb-0" >DirectAdmin</h1></b-navbar-brand></router-link>
 
           <b-collapse id="nav-text-collapse" is-nav>
             <b-navbar-nav class="ml-auto">
@@ -22,7 +22,12 @@
                     </div>
                 </b-dropdown>
                 
-                <b-nav-text class="ml-5 text-dark"><b-icon-person-circle scale="1.5" class="mr-2"></b-icon-person-circle>{{ loggedUsername }}</b-nav-text>
+                <b-nav-text class="ml-5 text-dark"><b-icon-person-circle scale="1.5" class="mr-2">
+                  
+                    </b-icon-person-circle>
+                    <router-link to="/user">{{ loggedUsername }}</router-link>
+                    </b-nav-text>
+                  
                 <b-button @click="logout()" class="ml-5" variant="danger"><b-icon icon="power"></b-icon></b-button>
             </b-navbar-nav>
           </b-collapse>
@@ -109,6 +114,12 @@ export default {
     },
     changeDomain(payload){
       this.$store.commit('setDomain', payload);
+    },
+    getUserData(){
+      let d = this.$store.dispatch('userData');
+      d.then((res) => {
+        this.$store.commit('setData', res);
+      })
     }
   },
   computed: {
@@ -123,15 +134,15 @@ export default {
     },
     domains() {
       return this.$store.state.data.DOMAIN_LIST;
-    },
-    cColor() {
-      return `color: ${this.$store.state.data.CUSTOM_COLOR_1}`;
     }
   },
   beforeMount() {
     if(localStorage.getItem('loginData')){
       this.$store.dispatch('login', localStorage.getItem('loginData'));
     }
+  },
+  mounted() {
+    this.getUserData();
   }
 }
 

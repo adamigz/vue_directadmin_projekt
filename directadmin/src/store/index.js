@@ -58,6 +58,13 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error);
       }
+    },
+    async createDomain(ctx, payload) {
+      try {
+        await axios.post(`/CREATE_DOMAIN?${payload}`);
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   modules: {
