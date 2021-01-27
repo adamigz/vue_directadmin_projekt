@@ -23,11 +23,11 @@ module.exports = {
           "^/API": "",
         },
       },
-      "/CREATE_DOMAIN": {
+      "/DOMAIN": {
         target: "https://161.35.197.42:2222/CMD_API_DOMAIN",
         changeOrigin: true,
         pathRewrite: {
-          "^/CREATE_DOMAIN": "",
+          "^/DOMAIN": "",
         },
       },
       "/GET_DOMAINS_WITH_DATA": {

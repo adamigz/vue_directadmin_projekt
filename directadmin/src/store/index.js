@@ -61,7 +61,7 @@ export default new Vuex.Store({
     },
     async createDomain(ctx, payload) {
       try {
-        let res = await axios.post(`/CREATE_DOMAIN?json=yes&action=create&${payload}`);
+        let res = await axios.post(`/DOMAIN?json=yes&action=create&${payload}`);
         console.log(res);
         return res;
       } catch (e) {
@@ -73,6 +73,14 @@ export default new Vuex.Store({
         let res = await axios('/GET_DOMAINS_WITH_DATA');
         return res;
       } catch (e) {
+        console.log(e);
+      }
+    },
+    async deleteDomains(ctx, payload) {
+      try {
+        let res = await axios.post(`/DOMAIN?json=yes&delete=anything&action=delete&confirmed=anything&${payload}`);
+        return res;
+      } catch(e) {
         console.log(e);
       }
     }
