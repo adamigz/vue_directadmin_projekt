@@ -61,7 +61,17 @@ export default new Vuex.Store({
     },
     async createDomain(ctx, payload) {
       try {
-        await axios.post(`/CREATE_DOMAIN?${payload}`);
+        let res = await axios.post(`/CREATE_DOMAIN?json=yes&action=create&${payload}`);
+        console.log(res);
+        return res;
+      } catch (e) {
+        console.log(e.response);
+      }
+    },
+    async getDomainsWithData(ctx) {
+      try {
+        let res = await axios('/GET_DOMAINS_WITH_DATA');
+        return res;
       } catch (e) {
         console.log(e);
       }

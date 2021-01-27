@@ -6,24 +6,29 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "Home",
+    component: Home,
   },
   {
-    path: '/user',
-    name: 'User',
+    path: "/user",
+    name: "User",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import('../views/User.vue')
+    component: () => import("../views/User.vue"),
   },
   {
-    path: '/createDomain',
-    name: 'createDomain',
-    component: () => import('../views/forms/TheDomainCreateForm.vue')
-  }
-]
+    path: "/domains/create",
+    name: "domainsCreate",
+    component: () => import("../views/forms/TheDomainCreateForm.vue"),
+  },
+  {
+    path: "/domains",
+    name: "domains",
+    component: () => import("../views/Domains.vue"),
+  },
+];
 
 const router = new VueRouter({
   routes

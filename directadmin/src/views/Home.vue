@@ -8,7 +8,8 @@
             Wyślij
           </b-button>
           <hr>
-          <router-link to="/createDomain">create domain</router-link>
+          <router-link to="/domains/create">create domain</router-link>
+          <router-link to="/domains">create domain</router-link>
         </b-card>
       </b-container>
     </b-col>
@@ -55,13 +56,10 @@ export default {
   },
   methods: {
     send() {
-      let res = this.$store.dispatch('createDomain', 'json=yes&action=create&domain=apirequest.com&bandwidth=200&quota=500&ssl=ON&cgi=ON&php=ON')
-      .then((res) => {
-        return res.result;
-      });
-      if (res != "Domain Created Successfully") {
-        console.log('błąd');
-      }
+      let res = this.$store.dispatch('getDomainsWithData');
+      res.then((r) => {
+        console.log(r.data);
+      })
     }
   },
   computed: {

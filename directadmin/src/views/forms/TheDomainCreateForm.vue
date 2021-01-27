@@ -1,5 +1,10 @@
 <template>
     <b-container class="mt-4">
+        <b-container fluid v-if="errorAlert != 0" class="" style="z-index: 2; position: fixed; top: 1rem; margin-left: auto; ">
+            <b-alert @dismissed="errorAlert=0" :show="errorAlert" variant="danger" style="z-index: 3; position: fixed">
+                <h5 class="alert-heading">{{ errorValue }}</h5>
+            </b-alert>
+        </b-container>
         <b-card>
             <h3>Create a new domain</h3>
             <hr>
@@ -57,22 +62,48 @@ export default {
                 domain: '',
                 bandwidth: null,
                 quota: null,
-                ssl: true,
-                php: true,
+                ssl: false,
+                php: false,
                 cgi: false
-            }
+            },
+            pSsl: '',
+            pPhp: '',
+            pCgi: '',
+            errorAlert: 0,
+            errorValue: ''
         }
     },
     methods: {
+        validate() {
+            if (this.form.domain != '' && this.form.bandwidth != null && this.form.quota != null) {
+                return true; 
+            } else {
+                return false;
+            }
+        },
         send(event) {
             event.preventDefault();
-            let res = this.$store.dispatch('createDomain', 'json=yes&action=create&domain=apirequest.com&bandwidth=200&quota=500&ssl=ON&cgi=ON&php=ON')
-            .then((res) => {
-                return res.result;
-            });
-            if (res != "Domain Created Successfully") {
-                console.log('błąd');
+            this.parseBoolFormData();
+            if(this.validate()) {
+                let res = this.$store.dispatch('createDomain', `domain=${this.form.domain}&bandwidth=${this.form.bandwidth}&quota=${this.form.quota}&ssl=${this.pSsl}&cgi=${this.pCgi}&php=${this.pPhp}`);
+                res.then((r) => {
+                    if(r == undefined){
+                        this.showAlert('Something went wrong with creating domain! Try again.');
+                    }
+                })
+            } else {
+                this.showAlert('You have empty fields in your form! Fill them.')
             }
+            
+        },
+        showAlert(value) {
+            this.errorValue = value;
+            this.errorAlert = 5;
+        },
+        parseBoolFormData(){
+            this.pSsl = this.form.ssl == true ? 'ON' : 'OFF';
+            this.pPhp = this.form.php == true ? 'ON' : 'OFF';
+            this.pCgi = this.form.cgi == true ? 'ON' : 'OFF';
         },
         onReset(event) {
             event.preventDefault();

@@ -27,8 +27,15 @@ module.exports = {
         target: "https://161.35.197.42:2222/CMD_API_DOMAIN",
         changeOrigin: true,
         pathRewrite: {
-          '^/CREATE_DOMAIN': "",
-        }
+          "^/CREATE_DOMAIN": "",
+        },
+      },
+      "/GET_DOMAINS_WITH_DATA": {
+        target: "https://161.35.197.42:2222/CMD_ADDITIONAL_DOMAINS?json=yes",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/GET_DOMAINS_WITH_DATA": "",
+        },
       },
     },
   },
