@@ -56,10 +56,7 @@ export default {
   },
   methods: {
     send() {
-      let res = this.$store.dispatch('getDomainsWithData');
-      res.then((r) => {
-        console.log(r.data);
-      })
+      
     }
   },
   computed: {

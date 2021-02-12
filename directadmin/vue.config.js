@@ -36,7 +36,7 @@ module.exports = {
         pathRewrite: {
           "^/GET_DOMAINS_WITH_DATA": "",
         },
-      },
+      }
     },
   },
 };

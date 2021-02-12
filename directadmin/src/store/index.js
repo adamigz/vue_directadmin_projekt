@@ -83,6 +83,24 @@ export default new Vuex.Store({
       } catch(e) {
         console.log(e);
       }
+    },
+    async suspendDomains(ctx, payload) {
+      try {
+        let res = await axios.post(`/DOMAIN?json=yes&suspend=Suspend / Unsuspend&reason=none&action=select&${payload}`);
+        return res;
+      } catch(e) {
+        console.log(e);
+      }
+    },
+
+    async setDefaultDomain(ctx, payload) {
+      try {
+        let res = await axios.post(`/DOMAIN?json=yes&default=Set as Default&reason=none&action=select&select0=${payload}`);
+        return res;
+      }
+       catch(e) {
+        console.log(e);
+      }
     }
   },
   modules: {

@@ -17,7 +17,12 @@
       </thead>
       <tbody>
         <tr v-for="(domain, index) in domains" :key="index">
-          <td>{{domain.domain}}</td>
+          <div v-if="domain.defaultdomain=='yes'">
+            <td><b>{{domain.domain}}</b></td>
+          </div>
+          <div v-else>
+            <td>{{domain.domain}}</td>
+          </div>
           <td>
             <div class="progress mt-1">
               <div class="progress-bar bg-success" role="progressbar" :style="{ width: fill(domain.bandwidth, domain.bandwidth_limit)}"> 
@@ -50,6 +55,8 @@
     </table>
     <b-container>
       <b-row align-h="end">
+        <b-button variant="outline-warning" class="mr-2" @click="setDefaultDomain()">Set as Default</b-button>
+        <b-button variant="outline-warning" class="mr-2" @click="suspendSelectedDomains()">Suspend / Unsuspend</b-button>
         <b-button variant="outline-danger" @click="deleteSelectedDomains()">Delete</b-button>
       </b-row>
     </b-container>
@@ -80,6 +87,9 @@
       fill(val, max){
         return max == 'unlimited' ? '100%' : `${val/max}%`;
       },
+      suspended(payload) {
+        return payload == "yes" ? true : false;
+      },
       subdomains(payload) {
         return payload == 0 ? 'NO' : payload;
       },
@@ -97,9 +107,12 @@
             let res = this.$store.dispatch('deleteDomains', queryString);
             res.then((r) => {
               if(r.statusText == "OK") {
-                window.location.reload();
+                this.domains = {};
+                this.$store.dispatch('getDomainsWithData');
               } else {
-
+                this.alertVariant = 'danger';
+                this.alert = 'Something went wrong!';
+                this.showAlert = true;
               }
             })
           } else {
@@ -111,8 +124,61 @@
           this.showAlert = true;
         }
         
-      }
+      },
+      suspendSelectedDomains() {
+        if (this.checkedDomains.length != 0) {
+          let queryString = '';
+
+          for(var i = 0; i < this.checkedDomains.length; i++) {
+            if(i == this.checkedDomains.length - 1){
+              queryString += `select${i}=${this.checkedDomains[i]}`;
+            }
+            else{
+              queryString += `select${i}=${this.checkedDomains[i]}&`;
+            }
+          }
+
+          let res = this.$store.dispatch('suspendDomains', queryString);
+          res.then((r) => {
+            if(r.status == 200){
+              window.location.reload();
+            }else{
+              this.alertVariant = 'danger';
+              this.alert = 'Something went wrong';
+              this.showAlert = true;
+            }
+          })
+        } else {
+          this.alertVariant = 'danger';
+          this.alert = 'You must select at least one domain!';
+          this.showAlert = true;
+        }
+      },
+    setDefaultDomain(){
+        if(this.checkedDomains.length == 1){
+          let queryString = this.checkedDomains[0];
+          let res = this.$store.dispatch('setDefaultDomain', queryString);
+          res.then((r) =>{
+            console.log(r);
+            if(r.status == 200){
+              window.location.reload();
+            }else{
+              this.alertVariant = 'danger';
+              this.alert = 'Something went wrong';
+              this.showAlert = true;
+            }
+          })
+        } else {
+            this.alertVariant = 'danger';
+              this.alert = 'You have to select exactly one domain.';
+              this.showAlert = true;
+        }
     },
+    
+    },
+
+    
+
     async mounted(){
       await this.getAllData().then((r) => {
         this.setDomains(r.data);
